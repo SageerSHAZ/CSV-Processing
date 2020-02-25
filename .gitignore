@@ -1,0 +1,8 @@
+App.config
+Car.cs
+Player.csproj
+Player.csproj.user
+Properties/
+bin/
+fuel.csv
+obj/
