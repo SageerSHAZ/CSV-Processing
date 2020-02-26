@@ -14,22 +14,32 @@ namespace Cars
             var cars = ProcessCars("fuel.csv");
             var manufacturers = ProcessManufacturers("manufacturers.csv");
             
-            #region Projection 
+            #region Projection using query syntax and Extension method syntax 
             var query =
                from car in cars
-               where car.Manufacturer == "BMW" && car.Year == 2016
+               join manufacturer in manufacturers 
+              on car.Manufacturer equals manufacturer.Name
                orderby car.Combined descending, car.Name ascending
                select new
                {
-                   car.Manufacturer,
+                   manufacturer.Headquarters,
                    car.Name,
                    car.Combined
                };
+
+            var query2 = cars.Join(manufacturers, c => c.Manufacturer, m => m.Name, (c, m) => new
+            {
+                m.Headquarters,
+                c.Name,
+                c.Combined
+            })
+            .OrderByDescending(c => c.Combined)
+            .ThenBy(c => c.Name);
             
             
-            foreach (var car in query.Take(10))
+            foreach (var car in query2.Take(10))
                 {
-                    Console.WriteLine($"{car.Manufacturer} {car.Name} : {car.Combined}");
+                    Console.WriteLine($"{car.Headquarters} {car.Name} : {car.Combined}");
                 }
             #endregion
         }
@@ -41,22 +51,7 @@ namespace Cars
                 File.ReadAllLines(path)
                     .Skip(1)
                     .Where(l => l.Length > 1)
-                    //.ToCar();
-                    .Select(l =>
-                    {
-                        var columns = l.Split(',');
-                        return new Car
-                        {
-                            Year = int.Parse(columns[0]),
-                            Manufacturer = columns[1],
-                            Name = columns[2],
-                            Displacement = double.Parse(columns[3]),
-                            Cylinders = int.Parse(columns[4]),
-                            City = int.Parse(columns[5]),
-                            Highway = int.Parse(columns[6]),
-                            Combined = int.Parse(columns[7])
-                        };
-                    });
+                    .ToCar();
 
             return query.ToList();
         }
