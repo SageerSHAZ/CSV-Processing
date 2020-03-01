@@ -1,0 +1,40 @@
+﻿
+Requirements Documents
+RentalCars is a simple console application based project in which the system has the
+ability to generate list of cars with their model year etc. System using entityframework for inserting
+and retrieving data.
+
+System uses LINQ to manipulate the data. Data mainly taken from csv file. 
+
+Extracting Requirements
+1. Adding Entity Framework
+1.1 Enable migration
+2. Adding class called CarDb
+3. Inheriting the CarDb from DbContext class
+4. Adding the Cars DbSet property
+5. Adding method called Inserting Data 
+6. Adding method called querying Data 
+7. Adding functionality that enable entity framework to drop and generate database
+
+
+enable-migrations
+
+Done Stories
+
+Adding Entity Framework
+
+Adding class called CarDb
+
+Inheriting the CarDb from DbContext class
+
+Adding the Cars DbSet property
+
+Adding Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CarDb>());
+
+Added some queries
+
+After changes in the model classes use following commands
+
+Enable-Migrations
+Add-Migration
+Update-Database -verbose
